@@ -14,6 +14,7 @@ service SalesService {
             Plant: String(100);
             Batch: String(100);
             StorageLocation: String(100);
+            MatlWrhsStkQtyInMatlBaseUnit:String(100);
         }
 };
 
@@ -31,12 +32,18 @@ service SalesService {
         null as Plant:String(100),
         null as Batch:String(100),
         null as StorageLocation:String(100),
+        
+        
     };
 
     entity MaterialStock as projection on external2.A_MatlStkInAcctMod{
         Material,
         Plant,
         Batch,
-        StorageLocation
+        StorageLocation,
+        MatlWrhsStkQtyInMatlBaseUnit
+    
     };
+
+    
 }

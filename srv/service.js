@@ -62,7 +62,7 @@ module.exports = cds.service.impl(async function () {
         if (materials.length > 0) {
             materialDetails = await materialstockapi.run(
                 SELECT.from('A_MatlStkInAcctMod')
-                    .columns(['Material', 'Plant', 'Batch', 'StorageLocation'])
+                    .columns(['Material', 'Plant', 'Batch', 'StorageLocation','MatlWrhsStkQtyInMatlBaseUnit'])
                     .where({ Material: { in: materials } })
             );
         }
