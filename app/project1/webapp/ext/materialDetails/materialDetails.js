@@ -82,6 +82,13 @@ sap.ui.define([
                     console.log('Material Details:', materialDetailsArray);
                     let oTable = new Table({
                         width: "100%",
+                        mode: sap.m.ListMode.SingleSelectLeft,
+                        growing : true,
+                        selectionChange: function(oEvent) {
+                            var oSelectedItem = oEvent.getParameter("listItem");
+                            var sMaterialNumber = oSelectedItem.getCells()[0].getText();
+                            console.log("Selected Material Number: " + sMaterialNumber);
+                        },
                         columns: [
                             new Column({
                                 header: new Text({ text: "Material" })
