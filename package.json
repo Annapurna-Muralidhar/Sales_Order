@@ -1,0 +1,37 @@
+{
+  "name": "Sales_Order",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap-cloud-sdk/http-client": "^3.22.2",
+    "@sap-cloud-sdk/resilience": "^3.22.2",
+    "@sap/cds": "^7",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/ux-specification": "^1.124.5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "cds": {
+    "requires": {
+      "API_SALES_ORDER_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_SALES_ORDER_SRV"
+      },
+      "API_MATERIAL_STOCK_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_MATERIAL_STOCK_SRV"
+      }
+    }
+  },
+  "sapux": [
+    "app/project1"
+  ]
+}
