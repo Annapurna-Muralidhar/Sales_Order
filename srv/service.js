@@ -65,7 +65,23 @@ module.exports = cds.service.impl(async function () {
             );
         }
         console.log('Material Details:', materialDetails);
-        return materialDetails;
+
+        const filteredMaterialDetails = [];
+        for (const detail of materialDetails) {
+            const saleOrder = detail.SDDocument;
+            const orderDetails = await salesorderapi.run(
+                SELECT.from('A_SalesOrder')
+                    .columns(['SoldToParty'])
+                    .where({ SalesOrder: saleOrder })
+            );
+            if (orderDetails.length > 0 && orderDetails[0].SoldToParty === '1000003' && detail.MatlWrhsStkQtyInMatlBaseUnit > 0) {
+                filteredMaterialDetails.push(detail);
+            }
+        }
+
+        console.log('Filtered Material Details:', filteredMaterialDetails);
+        return filteredMaterialDetails;
+    
     });
     
 

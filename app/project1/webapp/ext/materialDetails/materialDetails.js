@@ -214,16 +214,16 @@ sap.ui.define([
                                 header: new Text({ text: "Batch" })
                             }),
                             new Column({
-                                header: new Text({ text: "Quantity" })
+                                header: new Text({ text: "Avaliable Quantity" })
                             }),
                             new Column({
-                                header: new Text({ text: "MaterialBaseUnit" })
+                                header: new Text({ text: "Material Base Unit" })
                             }),
                             new Column({
-                                header: new Text({ text: "SDDocument" })
+                                header: new Text({ text: "SD Document" })
                             }),
                             new Column({
-                                header: new Text({ text: "SDDocumentItem" })
+                                header: new Text({ text: "SD Document Item" })
                             })
                         ],
                         items: materialDetailsArray.map(function(detail) {
@@ -244,8 +244,8 @@ sap.ui.define([
 
                     let oDialog = new Dialog({
                         title: 'Material Details',
-                        contentWidth: "600px",
-                        contentHeight: "500px",
+                        contentWidth: "900px",
+                        contentHeight: "700px",
                         verticalScrolling: true,
                         content: [oTable],
                         buttons: [

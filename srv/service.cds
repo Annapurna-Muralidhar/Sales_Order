@@ -23,7 +23,7 @@ service SalesService {
             SDDocumentItem:String(100);
             MaterialBaseUnit:String(10)
         }
-};
+    };
 
     entity SalesOrderItem as projection on external1.A_SalesOrderItem{
         SalesOrder,
@@ -60,3 +60,15 @@ service SalesService {
 
     
 }
+
+annotate SalesService.SalesOrder with @(
+    UI.LineItem:[
+        {Label:'Sales Order',Value: SalesOrder},
+        {Label:'Sales Order Item',Value: SalesOrderItem},
+        {Label:'Material',Value: Material},
+        {Label:'Customer',Value: SoldToParty},
+        {Label:'Requested Quantity',Value: RequestedQuantity},
+        {Label:'Requested Quantity Unit',Value: RequestedQuantityUnit}
+    ],
+    UI.SelectionFields: [ SalesOrder],  
+);
