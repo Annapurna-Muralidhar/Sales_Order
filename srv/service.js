@@ -7,21 +7,22 @@ module.exports = cds.service.impl(async function () {
     this.on('READ', 'SalesOrder', async req => {
         req.query.SELECT.columns = [
             { ref: ['SalesOrder'] },
+            { ref: ['SoldToParty'] },
             { ref: ['to_Item'], expand: ['*'] }
         ];
 
         let res = await salesorderapi.run(req.query);
-
         res.forEach(element => {
             if (element.to_Item) {
                 const item = element.to_Item.find(item => item.SalesOrder === element.SalesOrder);
                 if (item) {
                     element.SalesOrderItem = item.SalesOrderItem;
-                    element.Material=item.Material
+                    element.Material=item.Material;
+                    element.RequestedQuantity=item.RequestedQuantity;
+                    element.RequestedQuantityUnit=item.RequestedQuantityUnit
                 }
             }
         });
-
         return res;
     });
 
@@ -30,9 +31,7 @@ module.exports = cds.service.impl(async function () {
             { ref: ['Material'] },
             { ref: ['to_MatlStkInAcctMod'], expand: ['*'] }
         ];
-
         let res = await materialstockapi.run(req.query);
-
         res.forEach(element => {
             if (element.to_MatlStkInAcctMod) {
                 const materialDetail = element.to_MatlStkInAcctMod.find(item => item.Material === element.Material);
@@ -42,7 +41,6 @@ module.exports = cds.service.impl(async function () {
                 }
             }
         });
-
         return res;
     });
 
@@ -62,7 +60,7 @@ module.exports = cds.service.impl(async function () {
         if (materials.length > 0) {
             materialDetails = await materialstockapi.run(
                 SELECT.from('A_MatlStkInAcctMod')
-                    .columns(['Material', 'Plant', 'Batch', 'StorageLocation','MatlWrhsStkQtyInMatlBaseUnit'])
+                    .columns(['Material', 'Plant', 'Batch', 'StorageLocation','MatlWrhsStkQtyInMatlBaseUnit','SDDocument','SDDocumentItem','MaterialBaseUnit'])
                     .where({ Material: { in: materials } })
             );
         }

@@ -5,8 +5,12 @@ service SalesService {
     entity SalesOrder as projection on external1.A_SalesOrder{
         key SalesOrder,
         to_Item,
+        SoldToParty,
         null as SalesOrderItem:String(100),
-        null as Material:String(100)
+        null as Material:String(100),
+        null as RequestedQuantity:String(100),
+        null as RequestedQuantityUnit:String(100)
+        
         
     }actions{
         action materialDetails() returns array of {
@@ -15,6 +19,9 @@ service SalesService {
             Batch: String(100);
             StorageLocation: String(100);
             MatlWrhsStkQtyInMatlBaseUnit:String(100);
+            SDDocument:String(100);
+            SDDocumentItem:String(100);
+            MaterialBaseUnit:String(10)
         }
 };
 
@@ -22,7 +29,8 @@ service SalesService {
         SalesOrder,
         SalesOrderItem,
         Material,
-
+        RequestedQuantity,
+        RequestedQuantityUnit
     };
 
     entity Material as projection on external2.A_MaterialStock{
@@ -41,7 +49,12 @@ service SalesService {
         Plant,
         Batch,
         StorageLocation,
-        MatlWrhsStkQtyInMatlBaseUnit
+        MatlWrhsStkQtyInMatlBaseUnit,
+        SDDocument,
+        SDDocumentItem,
+        MaterialBaseUnit
+        
+
     
     };
 

@@ -193,9 +193,7 @@ sap.ui.define([
                         growing: true,
                         selectionChange: function(oEvent) {
                             var oSelectedItem = oEvent.getParameter("listItem");
-                            var oShowMaterialButton = oDialog.getButtons()[1]; // Get the 'Show Material Number' button
-                            
-                            // Enable or disable the "Show Material Number" button based on selection
+                            var oShowMaterialButton = oDialog.getButtons()[1]; 
                             if (oSelectedItem) {
                                 oShowMaterialButton.setEnabled(true);
                             } else {
@@ -217,6 +215,15 @@ sap.ui.define([
                             }),
                             new Column({
                                 header: new Text({ text: "Quantity" })
+                            }),
+                            new Column({
+                                header: new Text({ text: "MaterialBaseUnit" })
+                            }),
+                            new Column({
+                                header: new Text({ text: "SDDocument" })
+                            }),
+                            new Column({
+                                header: new Text({ text: "SDDocumentItem" })
                             })
                         ],
                         items: materialDetailsArray.map(function(detail) {
@@ -226,7 +233,10 @@ sap.ui.define([
                                     new Text({ text: detail.Plant }),
                                     new Text({ text: detail.StorageLocation }),
                                     new Text({ text: detail.Batch }),
-                                    new Text({ text: detail.MatlWrhsStkQtyInMatlBaseUnit })
+                                    new Text({ text: detail.MatlWrhsStkQtyInMatlBaseUnit }),
+                                    new Text({ text: detail.MaterialBaseUnit }),
+                                    new Text({ text: detail.SDDocument }),
+                                    new Text({ text: detail.SDDocumentItem })
                                 ]
                             });
                         })
@@ -247,17 +257,14 @@ sap.ui.define([
                             }),
                             new Button({
                                 text: 'Show Material Number',
-                                enabled: false,  // Initially disabled
+                                enabled: false,
                                 press: function () {
-                                    // Get the selected row
+                                
                                     var oSelectedItem = oTable.getSelectedItem();
                                     if (oSelectedItem) {
-                                        // Get the material number from the selected row
                                         var sMaterialNumber = oSelectedItem.getCells()[0].getText();
-                                        // Show the material number in a MessageToast
                                         MessageToast.show("Selected Material Number: " + sMaterialNumber);
                                     } else {
-                                        // If no row is selected, show a message
                                         MessageToast.show("No material selected!");
                                     }
                                 }
