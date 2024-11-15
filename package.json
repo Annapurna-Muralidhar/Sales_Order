@@ -38,8 +38,8 @@
       "API_MATERIAL_DOCUMENT_SRV_0001": {
         "kind": "odata-v2",
         "model": "srv/external/API_MATERIAL_DOCUMENT_SRV_0001",
-        "csrf": false,
-        "csrfInBatch": false
+        "csrf": true,
+        "csrfInBatch": true
       }
     }
   },
