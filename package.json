@@ -9,6 +9,8 @@
     "@sap-cloud-sdk/http-client": "^3.22.2",
     "@sap-cloud-sdk/resilience": "^3.22.2",
     "@sap/cds": "^7",
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
     "express": "^4"
   },
   "devDependencies": {
@@ -23,11 +25,21 @@
     "requires": {
       "API_SALES_ORDER_SRV": {
         "kind": "odata-v2",
-        "model": "srv/external/API_SALES_ORDER_SRV"
+        "model": "srv/external/API_SALES_ORDER_SRV",
+        "csrf": true,
+        "csrfInBatch": true
       },
       "API_MATERIAL_STOCK_SRV": {
         "kind": "odata-v2",
-        "model": "srv/external/API_MATERIAL_STOCK_SRV"
+        "model": "srv/external/API_MATERIAL_STOCK_SRV",
+        "csrf": true,
+        "csrfInBatch": true
+      },
+      "API_MATERIAL_DOCUMENT_SRV_0001": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_MATERIAL_DOCUMENT_SRV_0001",
+        "csrf": false,
+        "csrfInBatch": false
       }
     }
   },

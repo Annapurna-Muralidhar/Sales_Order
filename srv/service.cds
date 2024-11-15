@@ -1,7 +1,24 @@
 using { API_SALES_ORDER_SRV as external1 } from './external/API_SALES_ORDER_SRV';
 using { API_MATERIAL_STOCK_SRV as external2 } from './external/API_MATERIAL_STOCK_SRV';
+using { API_MATERIAL_DOCUMENT_SRV_0001 as external3 } from './external/API_MATERIAL_DOCUMENT_SRV_0001';
 
 service SalesService {
+
+     action transfer(
+        Material: String,
+        Plant: String,
+        StorageLocation: String,
+        Batch: String,
+        AvailableQuantity: String,
+        BaseUnit: String,
+        SDDocument: String,
+        SDDocumentItem: String,
+        
+    ) returns Boolean;
+
+
+    
+action getCSRFToken() returns String;
     entity SalesOrder as projection on external1.A_SalesOrder{
         key SalesOrder,
         to_Item,
@@ -27,7 +44,7 @@ service SalesService {
 
     entity SalesOrderItem as projection on external1.A_SalesOrderItem{
         SalesOrder,
-        SalesOrderItem,
+        key SalesOrderItem,
         Material,
         RequestedQuantity,
         RequestedQuantityUnit
@@ -52,23 +69,50 @@ service SalesService {
         MatlWrhsStkQtyInMatlBaseUnit,
         SDDocument,
         SDDocumentItem,
-        MaterialBaseUnit
+        MaterialBaseUnit,
+    
         
 
     
+    };
+
+    entity MaterialDocument as projection on external3.A_MaterialDocumentHeader{
+        MaterialDocument,
+        MaterialDocumentYear,
+        DocumentDate,
+        PostingDate,
+        GoodsMovementCode,
+        to_MaterialDocumentItem,
+    };
+
+    entity MaterialDocumentItem as projection on external3.A_MaterialDocumentItem{
+        MaterialDocument,
+        MaterialDocumentYear,
+        GoodsMovementType, 
+        Material, 
+        Plant,
+        StorageLocation, 
+        QuantityInEntryUnit, 
+        EntryUnit,
+        Batch,
+        InventorySpecialStockType, 
+        IssgOrRcvgMaterial, 
+        IssuingOrReceivingPlant, 
+        IssuingOrReceivingStorageLoc,
+        IssgOrRcvgBatch,
+        IssuingOrReceivingValType, 
+        SalesOrder,
+        SalesOrderItem, 
+        SpecialStockIdfgSalesOrder,
+        SpecialStockIdfgSalesOrderItem,
+        CostCenter
     };
 
     
 }
 
 annotate SalesService.SalesOrder with @(
-    UI.LineItem:[
-        {Label:'Sales Order',Value: SalesOrder},
-        {Label:'Sales Order Item',Value: SalesOrderItem},
-        {Label:'Material',Value: Material},
-        {Label:'Customer',Value: SoldToParty},
-        {Label:'Requested Quantity',Value: RequestedQuantity},
-        {Label:'Requested Quantity Unit',Value: RequestedQuantityUnit}
-    ],
     UI.SelectionFields: [ SalesOrder],  
+    
+    
 );
