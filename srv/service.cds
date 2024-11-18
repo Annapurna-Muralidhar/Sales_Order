@@ -3,7 +3,7 @@ using { API_MATERIAL_STOCK_SRV as external2 } from './external/API_MATERIAL_STOC
 using { API_MATERIAL_DOCUMENT_SRV_0001 as external3 } from './external/API_MATERIAL_DOCUMENT_SRV_0001';
 
 service SalesService {
-
+     
      action transfer(
         Material: String,
         Plant: String,
@@ -18,7 +18,7 @@ service SalesService {
 
 
     
-action getCSRFToken() returns String;
+function getCSRFToken() returns String;
     entity SalesOrder as projection on external1.A_SalesOrder{
         key SalesOrder,
         to_Item,
@@ -38,16 +38,19 @@ action getCSRFToken() returns String;
             MatlWrhsStkQtyInMatlBaseUnit:String(100);
             SDDocument:String(100);
             SDDocumentItem:String(100);
-            MaterialBaseUnit:String(10)
+            MaterialBaseUnit:String(10);
+           
         }
     };
 
     entity SalesOrderItem as projection on external1.A_SalesOrderItem{
         SalesOrder,
-        key SalesOrderItem,
+        SalesOrderItem,
         Material,
         RequestedQuantity,
-        RequestedQuantityUnit
+        RequestedQuantityUnit,
+    
+
     };
 
     entity Material as projection on external2.A_MaterialStock{

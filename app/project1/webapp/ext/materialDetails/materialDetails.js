@@ -17,7 +17,8 @@ sap.ui.define([
                 label: 'Confirm',
                 invocationGrouping: true    
             };
-                  
+        
+            
             this.editFlow.invokeAction('SalesService.materialDetails', mParameters)
                 .then(function(result) {
                     const materialDetailsArray = result.getObject().value;
@@ -94,6 +95,13 @@ sap.ui.define([
                                 text: 'Transfer Stock',
                                 enabled: false,
                                 press: function () {
+                                    console.log(mParameters);
+                                    console.log(aSelectedContexts[0].sPath);
+                                    const sPath = aSelectedContexts[0].sPath; // /SalesOrder('969')
+                                    const salesOrderNumber = sPath.match(/'([^']+)'/)[1];
+                                    console.log('Sales Order Number:', salesOrderNumber);
+
+                                    
                                     var oSelectedItem = oTable.getSelectedItem();
                                     if (oSelectedItem) {
                                         var aCells = oSelectedItem.getCells();
@@ -106,30 +114,41 @@ sap.ui.define([
                                             BaseUnit: aCells[5].getText(),
                                             SDDocument: aCells[6].getText(),
                                             SDDocumentItem: aCells[7].getText(),
-                                            SalesOrder:mParameters.SalesOrder
+                                            
                                         };
 
-                                        
-
-
-
-
-
-                                        
-                                        $.ajax({
-                                            url: "/odata/v4/sales/transfer",
-                                            type: 'POST',
-                                            contentType: "application/json",
-                                            data: JSON.stringify(oData),
-                                            success: function (result) {
-                                                MessageToast.show("Transfer triggered successfully.");
-                                         
+                                        jQuery.ajax({
+                                            url: "/odata/v4/sales/getCSRFToken()",
+                                            type: "GET",
+                                            headers: {
+                                              "X-CSRF-Token": "fetch",
                                             },
-                                            error: function (xhr, status, error) {
-                                                console.error("Error during transfer:", status, error);
-                                                MessageToast.show("Failed to trigger transfer.");
+                                            success: function (data, status, xhr) {
+                                                console.log("token:",xhr.getResponseHeader("X-CSRF-Token"))
+                                            jQuery.ajax({
+                                            url: "/odata/v4/sales/transfer",
+                                            type: "POST",
+                                            contentType: "application/json",
+                                            headers: {
+                                                "X-CSRF-Token": xhr.getResponseHeader("X-CSRF-Token"),
+                                              },
+                                            data: JSON.stringify(oData ),
+                                            success: function (result) {
+                                               
+                                                MessageToast.show("Transfered successfull");
+                                                
+                                            },
+                                            error: function (error) {
+                                                                                               
+                                                console.error("Error triggering :", error);
+                                                MessageBox.error("Transfered unsuccessfull");
                                             }
                                         });
+                                    },
+                                        error: function (error) {
+                                            console.error("Error :", error);
+                                        }
+                                    });
                                     } else {
                                         MessageToast.show("No material selected!");
                                     }
